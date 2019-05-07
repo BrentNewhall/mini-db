@@ -32,14 +32,22 @@ class App extends Component {
 
   render() {
     const items = this.state.items.map( (item, index) => {
-      return <div key={index}>{item.name}</div>
+      return <div className="row" key={index}>
+          <div className="col m2"><img alt="thumbnail" /></div>
+          <div className="col m20">
+            <h2><a href={item.link}>{item.name}</a></h2>
+            by <a href={item.author_email}>{item.author_name}</a>
+          </div>
+        </div>
     });
     return (
       <div className="App">
         <header className="App-header">
           Mini DB
         </header>
-        {items}
+        <div id="container">
+          {items}
+        </div>
       </div>
     );
   }
