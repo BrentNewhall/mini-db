@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import * as AWS from 'aws-sdk';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import './App.css';
 
+import { getItemHTML } from './global';
 import Tag from './Tag';
 
 class Home extends Component {
@@ -35,15 +36,8 @@ class Home extends Component {
 
   render() {
     const items = this.state.items.map( (item, index) => {
-      return <div className="row" key={index}>
-          <div className="col m2"><img src={item.preview_image_url} alt="thumbnail" className="preview-image" /></div>
-          <div className="col m20">
-            <h2><a href={item.link}>{item.name}</a></h2>
-            by <a href={item.author_email}>{item.author_name}</a><br />
-            [{item.tags !== "undefined" ? item.tags.values.map( (tag) => <span key={tag}><Link to={"/tag/" + tag}>{tag}</Link>,</span> ) : null}]
-          </div>
-        </div>
-    });
+      return getItemHTML( item, index ) }
+    );
     return (
       <div className="App">
         <header className="App-header">
