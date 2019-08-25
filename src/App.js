@@ -33,7 +33,7 @@ class App extends Component {
   render() {
     const items = this.state.items.map( (item, index) => {
       return <div className="row" key={index}>
-          <div className="col m2"><img alt="thumbnail" /></div>
+          <div className="col m2"><img src={item.preview_image_url} alt="thumbnail" className="preview-image" /></div>
           <div className="col m20">
             <h2><a href={item.link}>{item.name}</a></h2>
             by <a href={item.author_email}>{item.author_name}</a>
