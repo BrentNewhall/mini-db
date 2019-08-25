@@ -3,7 +3,7 @@ import * as AWS from 'aws-sdk';
 import { Route } from 'react-router-dom';
 import './App.css';
 
-import { getItemHTML } from './global';
+import { getItemsGridded } from './global';
 import Tag from './Tag';
 
 class Home extends Component {
@@ -35,16 +35,14 @@ class Home extends Component {
   }
 
   render() {
-    const items = this.state.items.map( (item, index) => {
-      return getItemHTML( item, index ) }
-    );
+    const itemsGridded = getItemsGridded( this.state.items );
     return (
       <div className="App">
         <header className="App-header">
           Mini DB
         </header>
         <div id="container">
-          {items}
+          {itemsGridded}
         </div>
       </div>
     );

@@ -16,8 +16,13 @@
 h2 {
   font-size: 2rem;
   margin: 0px;
+  color: white;
 }
 
-.preview-image {
-  width: 100%;
+span.card-title a {
+  background-color: rgba(0,0,0,0.5);
+  color: rgba(255,255,255,1.0);
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
+

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as AWS from 'aws-sdk';
 import './App.css';
 
-import { getItemHTML } from './global';
+import { getItemsGridded } from './global';
 
 class Tag extends Component {
   constructor( props ) {
@@ -24,7 +24,6 @@ class Tag extends Component {
   componentDidMount() {
     const params = {
       TableName: 'mini-db',
- 
     }
     this.docClient.scan( params, (err, data) => {
       this.setState( {
@@ -34,21 +33,14 @@ class Tag extends Component {
   }
 
   render() {
-    const items = this.state.items.map( (item, index) => {
-      if( item.tags.values.includes(this.tag) ) {
-        return getItemHTML( item, index );
-      }
-      else {
-        return null;
-      }
-    });
+    const itemsGridded = getItemsGridded( this.state.items, this.tag );
     return (
       <div className="App">
         <header className="App-header">
           Mini DB - {this.tag}
         </header>
         <div id="container">
-          {items}
+          {itemsGridded}
         </div>
       </div>
     );
