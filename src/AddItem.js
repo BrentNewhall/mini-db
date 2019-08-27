@@ -30,16 +30,16 @@ class AddItem extends Component {
     }
   }
 
-  addItem() {
-    const tagList = this.inputs["tags"].split(",");
+  addItem(e) {
+    const tagList = this.inputs["tags"].toLowerCase().replace(/[^a-z,]/g, "").split(",");
     let params = {
       TableName: 'mini-db',
       ReturnConsumedCapacity: "TOTAL",
       Item: {
         'id': { S: uuidv4() },
-        'name': { S: this.inputs["name"] },
-        'author_name': { S: this.inputs["author_name"] },
-        'author_email': { S: this.inputs["author_email"] },
+        'name': { S: this.inputs["name"].replace(/[^A-Za-z0-9, '-:]/g, "") },
+        'author_name': { S: this.inputs["author_name"].replace(/[^A-Za-z0-9,. '-]/g, "") },
+        'author_email': { S: this.inputs["author_email"].toLowerCase().replace(/[^a-z0-9@-_.]/g, "") },
         'link': { S: this.inputs["link"] },
         tags: { SS: tagList },
       },
@@ -57,6 +57,7 @@ class AddItem extends Component {
         this.props.history.push('/');
       }
     });
+    e.preventDefault();
   }
 
   render() {
@@ -66,35 +67,37 @@ class AddItem extends Component {
         3D Printed Minis and Terrain Database - Add Item
         </header>
         <div className="container">
-          <mat-form-field>
-            <mat-label>Item Name:</mat-label>
-            <input name="name" placeholder="Goblin" onChange={(e) => this.updateInputValue(e,"name")} />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Author Name:</mat-label>
-            <input name="author_name" placeholder="John Q. Public" onChange={(e) => this.updateInputValue(e,"author_name")} />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Author Email:</mat-label>
-            <input name="author_email" placeholder="john@public.com" onChange={(e) => this.updateInputValue(e,"author_email")} />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Link:</mat-label>
-            <input name="link" placeholder="https://website.com/goblin" onChange={(e) => this.updateInputValue(e,"link")} />
-          </mat-form-field>
-          <mat-form-field>
-            <mat-label>Preview Image URL:</mat-label>
-            <input name="preview_image_url" placeholder="https://website.com/images/goblin.jpg" onChange={(e) => this.updateInputValue(e,"preview_image_url")} />
-          </mat-form-field>
-          <div className="image-preview">
-            Image preview:<br />
-            <img src={this.state.imagePreview} alt="Preview" className="preview-image" />
-          </div>
-          <mat-form-field>
-            <mat-label>Tags:</mat-label>
-            <input name="tags" placeholder="mini,monster" onChange={(e) => this.updateInputValue(e,"tags")} />
-          </mat-form-field>
-          <button className="btn btn-primary" onClick={(e) => this.addItem()}>Add</button>
+          <form>
+            <mat-form-field>
+              <mat-label>Item Name:</mat-label>
+              <input name="name" placeholder="Goblin" onChange={(e) => this.updateInputValue(e,"name")} pattern="^[A-Za-z0-9, '-:]+$" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Author Name:</mat-label>
+              <input name="author_name" placeholder="John Q. Public" onChange={(e) => this.updateInputValue(e,"author_name")} pattern="^[A-Za-z0-9,\. '-:]+$" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Author Email:</mat-label>
+              <input name="author_email" placeholder="john@public.com" onChange={(e) => this.updateInputValue(e,"author_email")} pattern="^[a-z0-9@-_\.]+$" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Link:</mat-label>
+              <input name="link" placeholder="https://website.com/goblin" onChange={(e) => this.updateInputValue(e,"link")} pattern="^[!#$&-;=?-\[\]_a-zA-Z0-9%~]+$" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Preview Image URL:</mat-label>
+              <input name="preview_image_url" placeholder="https://website.com/images/goblin.jpg" onChange={(e) => this.updateInputValue(e,"preview_image_url")} pattern="^[!#$&-;=?-\[\]_a-zA-Z0-9%~]+$" />
+            </mat-form-field>
+            <div className="image-preview">
+              Image preview:<br />
+              <img src={this.state.imagePreview} alt="Preview" className="preview-image" />
+            </div>
+            <mat-form-field>
+              <mat-label>Tags:</mat-label>
+              <input name="tags" placeholder="mini,monster" onChange={(e) => this.updateInputValue(e,"tags")} pattern="^[a-z,]+$" />
+            </mat-form-field>
+            <input className="btn btn-primary" type="submit" onClick={(e) => this.addItem(e)} value="Add" />
+          </form>
         </div>
       </div>
     );
