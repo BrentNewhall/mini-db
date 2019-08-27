@@ -63,7 +63,7 @@ class AddItem extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          Mini DB - Add Item
+        3D Printed Minis and Terrain Database - Add Item
         </header>
         <div className="container">
           <mat-form-field>

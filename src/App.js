@@ -41,7 +41,7 @@ class Home extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          Mini DB
+          3D Printed Minis and Terrain Database
         </header>
         <div className="container">
           {itemsGridded}

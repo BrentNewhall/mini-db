@@ -37,7 +37,7 @@ class Tag extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          Mini DB - {this.tag}
+        3D Printed Minis and Terrain Database - {this.tag}
         </header>
         <div className="container">
           {itemsGridded}
