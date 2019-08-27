@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import * as AWS from 'aws-sdk';
-import { Route } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import './App.css';
 
 import { getItemsGridded } from './global';
 import Tag from './Tag';
+import AddItem from './AddItem';
+import addIconImage from './add-icon.png';
 
 class Home extends Component {
   constructor( props ) {
@@ -41,8 +43,11 @@ class Home extends Component {
         <header className="App-header">
           Mini DB
         </header>
-        <div id="container">
+        <div className="container">
           {itemsGridded}
+        </div>
+        <div className="add-button-container">
+          <Link to="/add" className="add-button"><img src={addIconImage} alt="Add" className="add-icon" /></Link>
         </div>
       </div>
     );
@@ -55,6 +60,7 @@ class App extends Component {
       <div>
         <Route path="/" exact component={Home} />
         <Route path="/tag/:tag" component={Tag} />
+        <Route path="/add" component={AddItem} />
       </div>
     )
   }

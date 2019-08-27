@@ -26,3 +26,18 @@ span.card-title a {
   padding-right: 0.5rem;
 }
 
+.add-button-container {
+  position: fixed;
+  right: 5px;
+  bottom: 5px;
+}
+
+.add-button {
+  border: 0px;
+  background-color: transparent;
+}
+
+.add-icon {
+  width: 2vw;
+  height: 2vw;
+}

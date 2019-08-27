@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import * as AWS from 'aws-sdk';
 import './App.css';
 
-import { getItemsGridded } from './global';
-
-class Tag extends Component {
+class AddItem extends Component {
   constructor( props ) {
     super( props );
     this.state = {
@@ -22,29 +20,20 @@ class Tag extends Component {
   }
 
   componentDidMount() {
-    const params = {
-      TableName: 'mini-db',
-    }
-    this.docClient.scan( params, (err, data) => {
-      this.setState( {
-        items: data.Items,
-      });
-    });
   }
 
   render() {
-    const itemsGridded = getItemsGridded( this.state.items, this.tag );
     return (
       <div className="App">
         <header className="App-header">
-          Mini DB - {this.tag}
+          Mini DB - Add Item
         </header>
         <div className="container">
-          {itemsGridded}
+          Add
         </div>
       </div>
     );
   }
 }
 
-export default Tag;
+export default AddItem;
