@@ -9,6 +9,7 @@ class AddItem extends Component {
     super( props );
     this.state = {
       items: [],
+      imagePreview: "",
     }
     AWS.config.update({
       region: 'us-east-1',
@@ -24,7 +25,9 @@ class AddItem extends Component {
 
   updateInputValue( event, name ) {
     this.inputs[name] = event.target.value;
-    //console.log( this.inputs );
+    if( name === "preview_image_url" ) {
+      this.setState( { imagePreview: event.target.value } );
+    }
   }
 
   addItem() {
@@ -83,6 +86,10 @@ class AddItem extends Component {
             <mat-label>Preview Image URL:</mat-label>
             <input name="preview_image_url" placeholder="https://website.com/images/goblin.jpg" onChange={(e) => this.updateInputValue(e,"preview_image_url")} />
           </mat-form-field>
+          <div className="image-preview">
+            Image preview:<br />
+            <img src={this.state.imagePreview} alt="Preview" className="preview-image" />
+          </div>
           <mat-form-field>
             <mat-label>Tags:</mat-label>
             <input name="tags" placeholder="mini,monster" onChange={(e) => this.updateInputValue(e,"tags")} />

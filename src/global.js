@@ -37,13 +37,13 @@ export function getItemsGridded( itemsList, filter = null ) {
           else { return null; }
         });
       let itemsGridded = [];
-      for( let i = 0; i < items.length; i += 2 ) {
+      for( let i = 0; i < items.length; i += 4 ) {
         let item0 = getColumn( items, i, 0 );
         let item1 = getColumn( items, i, 1 );
         let item2 = getColumn( items, i, 2 );
         let item3 = getColumn( items, i, 3 );
         itemsGridded.push(
-          <div className="row">{item0}{item1}{item2}{item3}</div>
+          <div className="row" key={'row' + i.toString()}>{item0}{item1}{item2}{item3}</div>
         )
       }
       return itemsGridded;
