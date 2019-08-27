@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import * as AWS from 'aws-sdk';
 import './App.css';
 
+import uuidv4 from 'uuid/v4';
+
 class AddItem extends Component {
   constructor( props ) {
     super( props );
@@ -17,9 +19,41 @@ class AddItem extends Component {
     this.tag = props.match.params["tag"];
     this.dynamodb = new AWS.DynamoDB();
     this.docClient = new AWS.DynamoDB.DocumentClient();
+    this.inputs = [];
   }
 
-  componentDidMount() {
+  updateInputValue( event, name ) {
+    this.inputs[name] = event.target.value;
+    //console.log( this.inputs );
+  }
+
+  addItem() {
+    const tagList = this.inputs["tags"].split(",");
+    let params = {
+      TableName: 'mini-db',
+      ReturnConsumedCapacity: "TOTAL",
+      Item: {
+        'id': { S: uuidv4() },
+        'name': { S: this.inputs["name"] },
+        'author_name': { S: this.inputs["author_name"] },
+        'author_email': { S: this.inputs["author_email"] },
+        'link': { S: this.inputs["link"] },
+        tags: { SS: tagList },
+      },
+    };
+    if( Object.keys(this.inputs).includes("preview_image_url")  &&  this.inputs["preview_image_url"] !== "" ) {
+      params.Item.preview_image_url = { S: this.inputs["preview_image_url"] };
+    };
+    this.dynamodb.putItem( params, (err, data) => {
+      if( err ) {
+        alert( "Error!" );
+        console.log( err, err.stack );
+      }
+      else {
+        alert( "Added!" );
+        this.props.history.push('/');
+      }
+    });
   }
 
   render() {
@@ -31,29 +65,29 @@ class AddItem extends Component {
         <div className="container">
           <mat-form-field>
             <mat-label>Item Name:</mat-label>
-            <input name="name" placeholder="Goblin" />
+            <input name="name" placeholder="Goblin" onChange={(e) => this.updateInputValue(e,"name")} />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Author Name:</mat-label>
-            <input name="author_name" placeholder="John Q. Public" />
+            <input name="author_name" placeholder="John Q. Public" onChange={(e) => this.updateInputValue(e,"author_name")} />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Author Email:</mat-label>
-            <input name="author_email" placeholder="john@public.com" />
+            <input name="author_email" placeholder="john@public.com" onChange={(e) => this.updateInputValue(e,"author_email")} />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Link:</mat-label>
-            <input name="link" placeholder="https://website.com/goblin" />
+            <input name="link" placeholder="https://website.com/goblin" onChange={(e) => this.updateInputValue(e,"link")} />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Preview Image URL:</mat-label>
-            <input name="link" placeholder="https://website.com/images/goblin.jpg" />
+            <input name="preview_image_url" placeholder="https://website.com/images/goblin.jpg" onChange={(e) => this.updateInputValue(e,"preview_image_url")} />
           </mat-form-field>
           <mat-form-field>
             <mat-label>Tags:</mat-label>
-            <input name="tags" placeholder="mini,monster" />
+            <input name="tags" placeholder="mini,monster" onChange={(e) => this.updateInputValue(e,"tags")} />
           </mat-form-field>
-          <button className="btn btn-primary">Add</button>
+          <button className="btn btn-primary" onClick={(e) => this.addItem()}>Add</button>
         </div>
       </div>
     );
