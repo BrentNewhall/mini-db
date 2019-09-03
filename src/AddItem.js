@@ -91,8 +91,8 @@ class AddItem extends Component {
               <input name="author_name" placeholder="John Q. Public" onChange={(e) => this.updateInputValue(e,"author_name")} required pattern="^[A-Za-z0-9,\. '-:]+$" />
             </mat-form-field>
             <mat-form-field>
-              <mat-label>Author Email:</mat-label>
-              <input name="author_email" placeholder="john@public.com" onChange={(e) => this.updateInputValue(e,"author_email")} pattern="^[a-z0-9@-_\.]+$" />
+              <mat-label>Author Contact (email/web/<em>etc.</em>):</mat-label>
+              <input name="author_email" placeholder="jane@public.com" onChange={(e) => this.updateInputValue(e,"author_email")} pattern="^[a-z0-9@-_\.]+$" />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Link:</mat-label>
