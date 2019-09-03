@@ -10,7 +10,7 @@ export function getItemHTML( item, index ) {
         </div>
         <div className="card-content">
           by <a href={item.author_email}>{item.author_name}</a><br />
-          [{item.tags !== "undefined" ? item.tags.values.map( (tag) => <span key={tag}><Link to={"/tag/" + tag}>{tag}</Link>,</span> ) : null}]
+          [{item.tags !== "undefined" ? item.tags.values.map( (tag) => <span key={tag}><Link to={"/tag/" + tag}>{tag}</Link></span> ).reduce((prev,curr) => [prev, ', ', curr]) : null}]
         </div>
       </div>
     )
