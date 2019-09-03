@@ -59,7 +59,7 @@ class AddItem extends Component {
       params.Item.preview_image_url = { S: this.inputs["preview_image_url"].replace(/[^!#$&-;=?-[\]_a-zA-Z0-9%~]/, "") };
     };
     if( Object.keys(this.inputs).includes("license")  &&  this.inputs["license"] !== "" ) {
-      params.Item.author_email = { S: this.inputs["license"].replace(/[^A-Za-z0-9- .]/g, "") };
+      params.Item.license = { S: this.inputs["license"].replace(/[^A-Za-z0-9- .]/g, "") };
     };
     this.dynamodb.putItem( params, (err, data) => {
       if( err ) {
