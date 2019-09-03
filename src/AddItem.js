@@ -4,12 +4,14 @@ import './App.css';
 
 import uuidv4 from 'uuid/v4';
 
+import emptyPreviewIcon from './empty-preview.png';
+
 class AddItem extends Component {
   constructor( props ) {
     super( props );
     this.state = {
       items: [],
-      imagePreview: "",
+      imagePreview: emptyPreviewIcon,
     }
     AWS.config.update({
       region: 'us-east-1',
@@ -40,12 +42,13 @@ class AddItem extends Component {
         'name': { S: this.inputs["name"].replace(/[^A-Za-z0-9, '-:]/g, "") },
         'author_name': { S: this.inputs["author_name"].replace(/[^A-Za-z0-9,. '-]/g, "") },
         'author_email': { S: this.inputs["author_email"].toLowerCase().replace(/[^a-z0-9@-_.]/g, "") },
-        'link': { S: this.inputs["link"] },
+        'link': { S: this.inputs["link"].replace(/[^!#$&-;=?-[\]_a-zA-Z0-9%~]/, "") },
+        'license': { S: this.inputs["license"].replace(/[^A-Za-z0-9- .]/g, "") },
         tags: { SS: tagList },
       },
     };
     if( Object.keys(this.inputs).includes("preview_image_url")  &&  this.inputs["preview_image_url"] !== "" ) {
-      params.Item.preview_image_url = { S: this.inputs["preview_image_url"] };
+      params.Item.preview_image_url = { S: this.inputs["preview_image_url"].replace(/[^!#$&-;=?-[\]_a-zA-Z0-9%~]/, "") };
     };
     this.dynamodb.putItem( params, (err, data) => {
       if( err ) {
@@ -95,6 +98,10 @@ class AddItem extends Component {
             <mat-form-field>
               <mat-label>Tags:</mat-label>
               <input name="tags" placeholder="mini,monster" onChange={(e) => this.updateInputValue(e,"tags")} pattern="^[a-z,]+$" />
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>License:</mat-label>
+              <input name="license" placeholder="CC BY 3.0" onChange={(e) => this.updateInputValue(e,"license")} pattern="^[A-Za-z0-9- .]+$" />
             </mat-form-field>
             <input className="btn btn-primary" type="submit" onClick={(e) => this.addItem(e)} value="Add" />
           </form>
