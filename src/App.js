@@ -8,6 +8,24 @@ import Tag from './Tag';
 import AddItem from './AddItem';
 import addIconImage from './add-icon.png';
 
+function sortItems(a,b) {
+  if( typeof a.createdAt === "undefined"  ||
+      typeof b.createdAt === "undefined" ) {
+    return 0;
+  }
+  const dateA = new Date(a.createdAt);
+  const dateB = new Date(b.createdAt);
+  if( dateA === dateB ) {
+    return 0;
+  }
+  else if( dateA < dateB ) {
+    return -1;
+  }
+  else {
+    return 1;
+  }
+}
+
 class Home extends Component {
   constructor( props ) {
     super( props );
@@ -27,11 +45,13 @@ class Home extends Component {
   componentDidMount() {
     const params = {
       TableName: 'mini-db',
- 
     }
     this.docClient.scan( params, (err, data) => {
+      const items = data.Items;
+      items.sort(sortItems);
+      items.reverse();
       this.setState( {
-        items: data.Items,
+        items,
       });
     });
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as AWS from 'aws-sdk';
 import './App.css';
+import M from 'materialize-css';
 
 import uuidv4 from 'uuid/v4';
 
@@ -23,6 +24,11 @@ class AddItem extends Component {
     this.dynamodb = new AWS.DynamoDB();
     this.docClient = new AWS.DynamoDB.DocumentClient();
     this.inputs = [];
+    this.inputs["name"] = "";
+    this.inputs["author_name"] = "";
+    this.inputs["author_email"] = "";
+    this.inputs["link"] = "";
+    this.inputs["license"] = "";
   }
 
   updateInputValue( event, name ) {
@@ -39,24 +45,29 @@ class AddItem extends Component {
       ReturnConsumedCapacity: "TOTAL",
       Item: {
         'id': { S: uuidv4() },
+        'createdAt': { S: (new Date()).toISOString() },
         'name': { S: this.inputs["name"].replace(/[^A-Za-z0-9, '-:]/g, "") },
         'author_name': { S: this.inputs["author_name"].replace(/[^A-Za-z0-9,. '-]/g, "") },
-        'author_email': { S: this.inputs["author_email"].toLowerCase().replace(/[^a-z0-9@-_.]/g, "") },
         'link': { S: this.inputs["link"].replace(/[^!#$&-;=?-[\]_a-zA-Z0-9%~]/, "") },
-        'license': { S: this.inputs["license"].replace(/[^A-Za-z0-9- .]/g, "") },
         tags: { SS: tagList },
       },
+    };
+    if( Object.keys(this.inputs).includes("author_email")  &&  this.inputs["author_email"] !== "" ) {
+      params.Item.author_email = { S: this.inputs["author_email"].toLowerCase().replace(/[^a-z0-9@-_.]/g, "") };
     };
     if( Object.keys(this.inputs).includes("preview_image_url")  &&  this.inputs["preview_image_url"] !== "" ) {
       params.Item.preview_image_url = { S: this.inputs["preview_image_url"].replace(/[^!#$&-;=?-[\]_a-zA-Z0-9%~]/, "") };
     };
+    if( Object.keys(this.inputs).includes("license")  &&  this.inputs["license"] !== "" ) {
+      params.Item.author_email = { S: this.inputs["license"].replace(/[^A-Za-z0-9- .]/g, "") };
+    };
     this.dynamodb.putItem( params, (err, data) => {
       if( err ) {
-        alert( "Error!" );
+        M.toast({html:'Error!'});
         console.log( err, err.stack );
       }
       else {
-        alert( "Added!" );
+        M.toast({html: 'Item added!'})
         this.props.history.push('/');
       }
     });
@@ -73,11 +84,11 @@ class AddItem extends Component {
           <form>
             <mat-form-field>
               <mat-label>Item Name:</mat-label>
-              <input name="name" placeholder="Goblin" onChange={(e) => this.updateInputValue(e,"name")} pattern="^[A-Za-z0-9, '-:]+$" />
+              <input name="name" placeholder="Goblin" onChange={(e) => this.updateInputValue(e,"name")} required pattern="^[A-Za-z0-9, '-:]+$" />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Author Name:</mat-label>
-              <input name="author_name" placeholder="John Q. Public" onChange={(e) => this.updateInputValue(e,"author_name")} pattern="^[A-Za-z0-9,\. '-:]+$" />
+              <input name="author_name" placeholder="John Q. Public" onChange={(e) => this.updateInputValue(e,"author_name")} required pattern="^[A-Za-z0-9,\. '-:]+$" />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Author Email:</mat-label>
@@ -85,7 +96,7 @@ class AddItem extends Component {
             </mat-form-field>
             <mat-form-field>
               <mat-label>Link:</mat-label>
-              <input name="link" placeholder="https://website.com/goblin" onChange={(e) => this.updateInputValue(e,"link")} pattern="^[!#$&-;=?-\[\]_a-zA-Z0-9%~]+$" />
+              <input name="link" placeholder="https://website.com/goblin" onChange={(e) => this.updateInputValue(e,"link")} required pattern="^[!#$&-;=?-\[\]_a-zA-Z0-9%~]+$" />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Preview Image URL:</mat-label>
