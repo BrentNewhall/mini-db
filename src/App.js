@@ -6,6 +6,7 @@ import './App.css';
 import { getItemsGridded } from './global';
 import Tag from './Tag';
 import AddItem from './AddItem';
+import Header from './Header';
 import addIconImage from './add-icon.png';
 
 function sortItems(a,b) {
@@ -60,9 +61,7 @@ class Home extends Component {
     const itemsGridded = getItemsGridded( this.state.items );
     return (
       <div className="App">
-        <header className="App-header">
-          3D Printed Minis and Terrain Database
-        </header>
+        <Header />
         <div className="container">
           {itemsGridded}
         </div>

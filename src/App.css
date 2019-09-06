@@ -19,6 +19,10 @@ h2 {
   color: white;
 }
 
+header > a {
+  color: white;
+}
+
 span.card-title a {
   background-color: rgba(0,0,0,0.5);
   color: rgba(255,255,255,1.0);

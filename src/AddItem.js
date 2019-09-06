@@ -5,6 +5,7 @@ import M from 'materialize-css';
 
 import uuidv4 from 'uuid/v4';
 
+import Header from './Header';
 import emptyPreviewIcon from './empty-preview.png';
 
 class AddItem extends Component {
@@ -77,9 +78,7 @@ class AddItem extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-        3D Printed Minis and Terrain Database - Add Item
-        </header>
+        <Header title="Add Item" />
         <div className="container">
           <form>
             <mat-form-field>
