@@ -78,7 +78,7 @@ class AddItem extends Component {
   render() {
     return (
       <div className="App">
-        <Header title="Add Item" />
+        <Header title="Add Item" items={this.state.items} />
         <div className="container">
           <form>
             <mat-form-field>

@@ -61,7 +61,7 @@ class Home extends Component {
     const itemsGridded = getItemsGridded( this.state.items );
     return (
       <div className="App">
-        <Header />
+        <Header items={this.state.items} />
         <div className="container">
           {itemsGridded}
         </div>
