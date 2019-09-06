@@ -84,7 +84,7 @@ class AddItem extends Component {
           <form>
             <mat-form-field>
               <mat-label>Item Name:</mat-label>
-              <input name="name" placeholder="Goblin" onChange={(e) => this.updateInputValue(e,"name")} required pattern="^[A-Za-z0-9, '-:]+$" />
+              <input name="name" placeholder="Goblin" onChange={(e) => this.updateInputValue(e,"name")} autoFocus required pattern="^[A-Za-z0-9, '-:]+$" />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Author Name:</mat-label>
