@@ -3,6 +3,7 @@ import * as AWS from 'aws-sdk';
 import './App.css';
 
 import { getItemsGridded } from './global';
+import Header from './Header';
 
 class Tag extends Component {
   constructor( props ) {
@@ -16,7 +17,6 @@ class Tag extends Component {
       accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
     });
-    this.tag = props.match.params["tag"];
     this.dynamodb = new AWS.DynamoDB();
     this.docClient = new AWS.DynamoDB.DocumentClient();
   }
@@ -33,12 +33,10 @@ class Tag extends Component {
   }
 
   render() {
-    const itemsGridded = getItemsGridded( this.state.items, this.tag );
+    const itemsGridded = getItemsGridded( this.state.items, this.props.match.params["tag"] );
     return (
       <div className="App">
-        <header className="App-header">
-        3D Printed Minis and Terrain Database - {this.tag}
-        </header>
+        <Header title={this.tag} items={this.state.items} />
         <div className="container">
           {itemsGridded}
         </div>

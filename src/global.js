@@ -35,7 +35,7 @@ export function getItemsGridded( itemsList, filter = null ) {
             return getItemHTML( item, index );
           }
           else { return null; }
-        });
+        }).filter(v => v !== null);
       let itemsGridded = [];
       for( let i = 0; i < items.length; i += 4 ) {
         let item0 = getColumn( items, i, 0 );
