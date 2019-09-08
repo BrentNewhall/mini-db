@@ -6,7 +6,7 @@ export function getItemHTML( item, index ) {
     return (
       <div className="card" key={index}>
         <div className="card-image">
-          <img src={'preview_image_url' in item ? item.preview_image_url : emptyPreviewIcon} alt="thumbnail" className="preview-image" />
+          <img src={'preview_image_url' in item ? item.preview_image_url : emptyPreviewIcon} alt="thumbnail" />
           <span className="card-title"><a href={item.link}>{item.name}</a></span>
         </div>
         <div className="card-content">
