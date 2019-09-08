@@ -25,7 +25,7 @@ class Header extends Component {
     return (
       <div>
         <header className="App-header">
-          <Link to="/">3D Printed Minis and Terrain Database{this.title}</Link>
+          <Link to="/">Labyrinth Library{this.title}</Link>
         </header>
         <nav>
           <p>{tags}</p>
