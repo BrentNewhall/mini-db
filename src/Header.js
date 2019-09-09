@@ -27,9 +27,9 @@ class Header extends Component {
         <header className="App-header">
           <Link to="/">Labyrinth Library{this.title}</Link>
         </header>
-        <nav>
-          <p>{tags}</p>
-        </nav>
+        <div class="tags light-blue darken-4">
+          {tags}
+        </div>
       </div>
     );
   }

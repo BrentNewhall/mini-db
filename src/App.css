@@ -50,3 +50,12 @@ span.card-title a {
   max-width: 200px;
   max-height: 200px;
 }
+
+.tags {
+  padding: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.tags a {
+  color: white;
+}
