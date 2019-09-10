@@ -26,33 +26,44 @@ function getColumn( items, index, offset ) {
     }
 }
 
-function getItemsFiltered(itemsList, filter = null) {
-  let items = (filter === null) ?
-    itemsList.map((item, index) => {
-      return getItemHTML(item, index)
-    })
-    : itemsList.map((item, index) => {
-      if (filter.type === "tag") {
-        if (item.tags.values.includes(filter.tag)) {
-          return getItemHTML(item, index);
-        }
-        else {
-          return null;
-        }
-      }
-      if( filter.type === "search" ) {
-        if( (typeof item.name !== "undefined"  &&  item.name.toLowerCase().includes(filter.query.toLowerCase()))  ||
-            (typeof item.author_name !== "undefined"  &&  item.author_name.toLowerCase().includes(filter.query.toLowerCase()))  ||
-            item.tags.values.includes(filter.query.toLowerCase())) {
-          return getItemHTML(item, index);
-        }
-        else {
-          return null;
-        }
-      }
+function performItemTagMatch( itemsList, filter ) {
+  return itemsList.map((item, index) => {
+    if (item.tags.values.includes(filter.tag)) {
+      return getItemHTML(item, index);
+    }
+    else {
       return null;
-    }).filter(v => v !== null);
-  return items;
+    }
+  })
+}
+
+function performItemSearch( itemsList, filter ) {
+  return itemsList.map((item, index) => {
+    if( (typeof item.name !== "undefined"  &&  item.name.toLowerCase().includes(filter.query.toLowerCase()))  ||
+        (typeof item.author_name !== "undefined"  &&  item.author_name.toLowerCase().includes(filter.query.toLowerCase()))  ||
+        item.tags.values.includes(filter.query.toLowerCase())) {
+      return getItemHTML(item, index);
+    }
+    else {
+      return null;
+    }
+  })
+}
+
+function getItemsFiltered(itemsList, filter = null) {
+  let items = [];
+  if( filter === null ) {
+    items = itemsList.map((item, index) => {
+      return getItemHTML(item, index)
+    });
+  }
+  else if( filter.type === "search" ) {
+    items = performItemSearch( itemsList, filter );
+  }
+  else if( filter.type === "tag" ) {
+    items = performItemTagMatch( itemsList, filter );
+  }
+  return items.filter( v => v !== null );
 }
 
 export function getItemsGridded(itemsList, filter = null) {
