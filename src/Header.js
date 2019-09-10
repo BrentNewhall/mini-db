@@ -12,7 +12,6 @@ class Header extends Component {
   }
   
   render() {
-    console.log( "This props:", this.props.items );
     let tags = [];
     if( typeof this.props.items !== "undefined"  &&  this.props.items.length > 0 ) {
       this.props.items.forEach( (item) => {
@@ -27,7 +26,7 @@ class Header extends Component {
         <header className="App-header">
           <Link to="/">Labyrinth Library{this.title}</Link>
         </header>
-        <div class="tags light-blue darken-4">
+        <div className="tags light-blue darken-4">
           {tags}
         </div>
       </div>

@@ -32,10 +32,22 @@ export function getItemsGridded( itemsList, filter = null ) {
           return getItemHTML( item, index )
         })
       : itemsList.map( (item, index) => {
-          if( item.tags.values.includes(filter) ) {
-            return getItemHTML( item, index );
+          if( filter.type === "tags" ) {
+            if( item.tags.values.includes(filter) ) {
+              return getItemHTML( item, index );
+            }
+            else {
+              return null;
+            }
           }
-          else { return null; }
+          if( filter.type === "search" ) {
+            if( typeof item.name !== "undefined"  &&  item.name.toLowerCase().includes(filter.query.toLowerCase()) ) {
+              return getItemHTML( item, index );
+            }
+            else {
+              return null;
+            }
+          }
         }).filter(v => v !== null);
       let itemsGridded = [];
       for( let i = 0; i < items.length; i += 4 ) {

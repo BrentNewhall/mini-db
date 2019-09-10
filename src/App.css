@@ -53,7 +53,14 @@ span.card-title a {
 
 .tags {
   padding: 0.5rem;
+}
+
+.search {
   margin-bottom: 2rem;
+}
+
+.search > .input-field {
+  margin-top: 0px;
 }
 
 .tags a {

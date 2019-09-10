@@ -32,6 +32,7 @@ class Home extends Component {
     super( props );
     this.state = {
       items: [],
+      search: "",
     }
     AWS.config.update({
       region: 'us-east-1',
@@ -57,11 +58,18 @@ class Home extends Component {
     });
   }
 
+  searchChanged(e) {
+    this.setState( { search: e.target.value } );
+  }
+
   render() {
-    const itemsGridded = getItemsGridded( this.state.items );
+    const itemsGridded = this.state.search === "" ? getItemsGridded( this.state.items ) : getItemsGridded( this.state.items, {type:"search",query:this.state.search});
     return (
       <div className="App">
         <Header items={this.state.items} />
+        <div className="search light-blue lighten-4">
+          <div className="input-field"><i className="material-icons prefix">search</i><input type="text" name="search" onChange={(e) => this.searchChanged(e)} /></div>
+        </div>
         <div className="container">
           {itemsGridded}
         </div>
