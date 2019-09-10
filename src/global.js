@@ -26,38 +26,46 @@ function getColumn( items, index, offset ) {
     }
 }
 
-export function getItemsGridded( itemsList, filter = null ) {
-      let items = ( filter === null ) ?  
-        itemsList.map( (item, index) => {
-          return getItemHTML( item, index )
-        })
-      : itemsList.map( (item, index) => {
-          if( filter.type === "tags" ) {
-            if( item.tags.values.includes(filter) ) {
-              return getItemHTML( item, index );
-            }
-            else {
-              return null;
-            }
-          }
-          if( filter.type === "search" ) {
-            if( typeof item.name !== "undefined"  &&  item.name.toLowerCase().includes(filter.query.toLowerCase()) ) {
-              return getItemHTML( item, index );
-            }
-            else {
-              return null;
-            }
-          }
-        }).filter(v => v !== null);
-      let itemsGridded = [];
-      for( let i = 0; i < items.length; i += 4 ) {
-        let item0 = getColumn( items, i, 0 );
-        let item1 = getColumn( items, i, 1 );
-        let item2 = getColumn( items, i, 2 );
-        let item3 = getColumn( items, i, 3 );
-        itemsGridded.push(
-          <div className="row" key={'row' + i.toString()}>{item0}{item1}{item2}{item3}</div>
-        )
+function getItemsFiltered(itemsList, filter = null) {
+  let items = (filter === null) ?
+    itemsList.map((item, index) => {
+      return getItemHTML(item, index)
+    })
+    : itemsList.map((item, index) => {
+      if (filter.type === "tag") {
+        if (item.tags.values.includes(filter.tag)) {
+          return getItemHTML(item, index);
+        }
+        else {
+          return null;
+        }
       }
-      return itemsGridded;
+      if( filter.type === "search" ) {
+        if( (typeof item.name !== "undefined"  &&  item.name.toLowerCase().includes(filter.query.toLowerCase()))  ||
+            (typeof item.author_name !== "undefined"  &&  item.author_name.toLowerCase().includes(filter.query.toLowerCase()))  ||
+            item.tags.values.includes(filter.query.toLowerCase())) {
+          return getItemHTML(item, index);
+        }
+        else {
+          return null;
+        }
+      }
+      return null;
+    }).filter(v => v !== null);
+  return items;
+}
+
+export function getItemsGridded(itemsList, filter = null) {
+  let items = getItemsFiltered(itemsList, filter);
+  let itemsGridded = [];
+  for (let i = 0; i < items.length; i += 4) {
+    let item0 = getColumn(items, i, 0);
+    let item1 = getColumn(items, i, 1);
+    let item2 = getColumn(items, i, 2);
+    let item3 = getColumn(items, i, 3);
+    itemsGridded.push(
+      <div className="row" key={'row' + i.toString()}>{item0}{item1}{item2}{item3}</div>
+    )
+  }
+  return itemsGridded;
 }
