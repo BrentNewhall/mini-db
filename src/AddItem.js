@@ -86,16 +86,16 @@ class AddItem extends Component {
               <input name="name" placeholder="Goblin" onChange={(e) => this.updateInputValue(e,"name")} autoFocus required pattern="^[A-Za-z0-9, '-:]+$" />
             </mat-form-field>
             <mat-form-field>
+              <mat-label>Link:</mat-label>
+              <input name="link" placeholder="https://website.com/goblin" onChange={(e) => this.updateInputValue(e,"link")} required pattern="^[!#$&-;=?-\[\]_a-zA-Z0-9%~]+$" />
+            </mat-form-field>
+            <mat-form-field>
               <mat-label>Author Name:</mat-label>
               <input name="author_name" placeholder="John Q. Public" onChange={(e) => this.updateInputValue(e,"author_name")} required pattern="^[A-Za-z0-9,\. '-:]+$" />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Author Contact (email/web/<em>etc.</em>):</mat-label>
               <input name="author_email" placeholder="jane@public.com" onChange={(e) => this.updateInputValue(e,"author_email")} pattern="^[a-z0-9@-_\.]+$" />
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Link:</mat-label>
-              <input name="link" placeholder="https://website.com/goblin" onChange={(e) => this.updateInputValue(e,"link")} required pattern="^[!#$&-;=?-\[\]_a-zA-Z0-9%~]+$" />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Preview Image URL:</mat-label>

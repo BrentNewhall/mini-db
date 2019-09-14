@@ -76,6 +76,7 @@ class Home extends Component {
         <div className="add-button-container">
           <Link to="/add" className="add-button"><img src={addIconImage} alt="Add" className="add-icon" /></Link>
         </div>
+        <div className="num-items">{this.state.items.length}</div>
       </div>
     );
   }
