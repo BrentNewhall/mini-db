@@ -66,6 +66,26 @@ function getItemsFiltered(itemsList, filter = null) {
   return items.filter( v => v !== null );
 }
 
+export function getAllTags( itemsList ) {
+  let tags = [];
+  let columns = [];
+  if( typeof itemsList !== "undefined"  &&  itemsList.length > 0 ) {
+    itemsList.forEach( (item) => {
+      tags = tags.concat(item.tags.values);
+    })
+    tags = tags.filter((v, i, a) => a.indexOf(v) === i); 
+    tags.sort();
+    tags = tags.map((tag) => <Link key={tag} to={"/tag/" + tag}>{tag}</Link> );
+    const numColumns = 4;
+    for( let i = 0; i < numColumns; i++ ) {
+      const index = (1 / numColumns) * tags.length * i;
+      const colLength = (1 / numColumns) * tags.length;
+      columns.push( tags.slice(index,index+colLength) );
+    }
+  }
+  return columns;
+}
+
 export function getItemsGridded(itemsList, filter = null) {
   let items = getItemsFiltered(itemsList, filter);
   let itemsGridded = [];

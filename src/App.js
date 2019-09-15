@@ -5,6 +5,7 @@ import './App.css';
 
 import { getItemsGridded } from './global';
 import Tag from './Tag';
+import Tags from './Tags';
 import AddItem from './AddItem';
 import Header from './Header';
 import addIconImage from './add-icon.png';
@@ -88,6 +89,7 @@ class App extends Component {
       <div>
         <Route path="/" exact component={Home} />
         <Route path="/tag/:tag" component={Tag} />
+        <Route path="/tags" component={Tags} />
         <Route path="/add" component={AddItem} />
       </div>
     )
