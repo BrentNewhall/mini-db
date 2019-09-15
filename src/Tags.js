@@ -34,14 +34,15 @@ class Tags extends Component {
 
   render() {
     const tagColumns = getAllTags( this.state.items );
+    const tagCounts = tagColumns[1];
     return (
       <div className="App">
         <Header title="All Tags" items={this.state.items} />
         <div className="container">
           <div className="row">
-            {tagColumns.map( (tagColumn,columnIndex) => {
+            {tagColumns[0].map( (tagColumn,columnIndex) => {
               return <div key={columnIndex} className="col s3">{tagColumn.map( (t,tagIndex) => {
-                return <div key={tagIndex}>{t}</div>;
+                return <div key={tagIndex}>{t} ({tagCounts[t.key]})</div>;
               })}</div>
             })}
           </div>

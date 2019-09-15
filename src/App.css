@@ -23,6 +23,12 @@ header > a {
   color: white;
 }
 
+nav {
+  padding: 0.5rem;
+  height: 2.5rem;
+  line-height: 1.5;
+}
+
 span.card-title a {
   background-color: rgba(0,0,0,0.5);
   color: rgba(255,255,255,1.0);

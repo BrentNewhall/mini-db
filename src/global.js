@@ -66,24 +66,39 @@ function getItemsFiltered(itemsList, filter = null) {
   return items.filter( v => v !== null );
 }
 
+function getTagCounts( tags ) {
+  let tagCounts = {};
+  tags.forEach( (tag) => {
+    if( Object.keys(tagCounts).includes(tag) ) {
+      tagCounts[tag] += 1;
+    }
+    else {
+      tagCounts[tag] = 1;
+    }
+  });
+  return tagCounts;
+}
+
 export function getAllTags( itemsList ) {
   let tags = [];
   let columns = [];
+  let tagCounts = {};
   if( typeof itemsList !== "undefined"  &&  itemsList.length > 0 ) {
     itemsList.forEach( (item) => {
       tags = tags.concat(item.tags.values);
     })
+    tagCounts = getTagCounts( tags );
     tags = tags.filter((v, i, a) => a.indexOf(v) === i); 
     tags.sort();
     tags = tags.map((tag) => <Link key={tag} to={"/tag/" + tag}>{tag}</Link> );
     const numColumns = 4;
     for( let i = 0; i < numColumns; i++ ) {
-      const index = (1 / numColumns) * tags.length * i;
-      const colLength = (1 / numColumns) * tags.length;
+      const index = Math.ceil((1 / numColumns) * tags.length * i);
+      const colLength = Math.ceil((1 / numColumns) * tags.length);
       columns.push( tags.slice(index,index+colLength) );
     }
   }
-  return columns;
+  return [columns,tagCounts];
 }
 
 export function getItemsGridded(itemsList, filter = null) {
