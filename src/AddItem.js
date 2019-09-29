@@ -50,6 +50,7 @@ class AddItem extends Component {
         'name': { S: this.inputs["name"].replace(/[^A-Za-z0-9, '-:]/g, "") },
         'author_name': { S: this.inputs["author_name"].replace(/[^A-Za-z0-9,. '-]/g, "") },
         'link': { S: this.inputs["link"].replace(/[^!#$&-;=?-[\]_a-zA-Z0-9%~]/, "") },
+        'approved': { BOOL: false },
         tags: { SS: tagList },
       },
     };
