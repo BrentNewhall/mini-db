@@ -16,6 +16,8 @@ function getSimpleName( name ) {
 }
 
 export function getItemHTML( item, index ) {
+    if( typeof item.approved !== "undefined"  &&  ! item.approved )
+      return null;
     const itemName = getSimpleName( item.name );
     return (
       <div className="card" key={index}>
@@ -33,7 +35,8 @@ export function getItemHTML( item, index ) {
 
 function getColumn( items, index, offset ) {
     if( index+offset < items.length  &&  items[index+offset] !== null ) {
-        return <div className="col m3">{items[index+offset]}</div>;
+      console.log( "Column:",items[index+offset]);
+      return <div className="col m3">{items[index+offset]}</div>;
     }
     else {
         return null;
