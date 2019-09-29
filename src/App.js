@@ -50,12 +50,14 @@ class Home extends Component {
       TableName: 'mini-db',
     }
     this.docClient.scan( params, (err, data) => {
-      const items = data.Items;
-      items.sort(sortItems);
-      items.reverse();
-      this.setState( {
-        items,
-      });
+      if( data !== null ) {
+        const items = data.Items;
+        items.sort(sortItems);
+        items.reverse();
+        this.setState( {
+          items,
+        });
+      }
     });
   }
 

@@ -2,12 +2,26 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import emptyPreviewIcon from './empty-preview.png';
 
+function getSimpleName( name ) {
+  const MAX_LENGTH = 50;
+  if( name.length > MAX_LENGTH ) {
+    const choppedName = name.substr(0,MAX_LENGTH);
+    const lastSpace = choppedName.lastIndexOf(" ");
+    if( lastSpace > MAX_LENGTH - 10 ) {
+      return choppedName.substr(0,lastSpace).trim() + "...";
+    }
+    return choppedName.substr(0,MAX_LENGTH-5) + "...";
+  }
+  return name;
+}
+
 export function getItemHTML( item, index ) {
+    const itemName = getSimpleName( item.name );
     return (
       <div className="card" key={index}>
         <div className="card-image">
           <img src={'preview_image_url' in item ? item.preview_image_url : emptyPreviewIcon} alt="thumbnail" />
-          <span className="card-title"><a href={item.link}>{item.name}</a></span>
+          <span className="card-title"><a href={item.link}>{itemName}</a></span>
         </div>
         <div className="card-content">
           by <a href={item.author_email}>{item.author_name}</a><br />
