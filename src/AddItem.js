@@ -12,8 +12,10 @@ class AddItem extends Component {
   constructor( props ) {
     super( props );
     this.state = {
-      items: [],
+      links: [],
       imagePreview: emptyPreviewIcon,
+      dupeWarningVisible: "none",
+      addDisabled: false,
     }
     AWS.config.update({
       region: 'us-east-1',
@@ -30,6 +32,22 @@ class AddItem extends Component {
     this.inputs["author_email"] = "";
     this.inputs["link"] = "";
     this.inputs["license"] = "";
+  }
+
+  componentDidMount() {
+    const params = {
+      TableName: 'mini-db',
+    }
+    this.docClient.scan( params, (err, data) => {
+      if( data !== null ) {
+        const items = data.Items;
+        const links = items.map( (item) => {
+          return item.link;
+        });
+        console.log( links );
+        this.setState( { links } );
+      }
+    });
   }
 
   updateInputValue( event, name ) {
@@ -76,6 +94,17 @@ class AddItem extends Component {
     e.preventDefault();
   }
 
+  checkForDuplicateLink( event ) {
+    if( this.state.links.includes( event.target.value ) ) {
+      this.setState( { dupeWarningVisible: "block", addDisabled: true } );
+      console.log( "Yes" );
+    }
+    else {
+      this.setState( { dupeWarningVisible: "none", addDisabled: false } );
+    }
+    console.log( "Dupe?", event.target.value, this.state.links );
+  }
+
   render() {
     return (
       <div className="App">
@@ -88,8 +117,9 @@ class AddItem extends Component {
             </mat-form-field>
             <mat-form-field>
               <mat-label>Link:</mat-label>
-              <input name="link" placeholder="https://website.com/goblin" onChange={(e) => this.updateInputValue(e,"link")} required pattern="^[!#$&-;=?-\[\]_a-zA-Z0-9%~]+$" />
+              <input name="link" placeholder="https://website.com/goblin" onBlur={(e) => this.checkForDuplicateLink(e)} onChange={(e) => this.updateInputValue(e,"link")} required pattern="^[!#$&-;=?-\[\]_a-zA-Z0-9%~]+$" />
             </mat-form-field>
+            <div className="card red lighten-5" style={{display:this.state.dupeWarningVisible}}><div className="card-content red-text">This link already exists in the database!</div></div>
             <mat-form-field>
               <mat-label>Author Name:</mat-label>
               <input name="author_name" placeholder="John Q. Public" onChange={(e) => this.updateInputValue(e,"author_name")} required pattern="^[A-Za-z0-9,\. '-:]+$" />
@@ -115,7 +145,7 @@ class AddItem extends Component {
               <input name="license" placeholder="CC BY 3.0" onChange={(e) => this.updateInputValue(e,"license")} pattern="^[A-Za-z0-9- .]+$" />
             </mat-form-field>
             <p>Note: Your item will not appear in the database immediately; it will be reviewed and approved to avoid spam.</p>
-            <input className="btn btn-primary" type="submit" onClick={(e) => this.addItem(e)} value="Add" />
+            <input className="btn btn-primary" type="submit" disabled={this.state.addDisabled} onClick={(e) => this.addItem(e)} value="Add" />
           </form>
         </div>
       </div>
