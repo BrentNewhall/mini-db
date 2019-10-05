@@ -44,7 +44,6 @@ class AddItem extends Component {
         const links = items.map( (item) => {
           return item.link;
         });
-        console.log( links );
         this.setState( { links } );
       }
     });
@@ -97,12 +96,10 @@ class AddItem extends Component {
   checkForDuplicateLink( event ) {
     if( this.state.links.includes( event.target.value ) ) {
       this.setState( { dupeWarningVisible: "block", addDisabled: true } );
-      console.log( "Yes" );
     }
     else {
       this.setState( { dupeWarningVisible: "none", addDisabled: false } );
     }
-    console.log( "Dupe?", event.target.value, this.state.links );
   }
 
   render() {
