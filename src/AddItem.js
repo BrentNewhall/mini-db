@@ -102,6 +102,15 @@ class AddItem extends Component {
     }
   }
 
+  updateAuthor( event ) {
+    if( document.getElementById("author_name").value === "" ) {
+      let name = event.target.value;
+      name = name.substring(name.lastIndexOf("/")+1);
+      document.getElementById("author_name").value = name;
+      this.inputs["author_name"] = name;
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -119,11 +128,11 @@ class AddItem extends Component {
             <div className="card red lighten-5" style={{display:this.state.dupeWarningVisible}}><div className="card-content red-text">This link already exists in the database!</div></div>
             <mat-form-field>
               <mat-label>Author Name:</mat-label>
-              <input name="author_name" placeholder="John Q. Public" onChange={(e) => this.updateInputValue(e,"author_name")} required pattern="^[A-Za-z0-9,\. '-:]+$" />
+              <input name="author_name" id="author_name" placeholder="John Q. Public" onChange={(e) => this.updateInputValue(e,"author_name")} required pattern="^[A-Za-z0-9,\. '-:]+$" />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Author Contact (email/web/<em>etc.</em>):</mat-label>
-              <input name="author_email" placeholder="jane@public.com" onChange={(e) => this.updateInputValue(e,"author_email")} pattern="^[a-z0-9@-_\.]+$" />
+              <input name="author_email" placeholder="jane@public.com" onChange={(e) => {this.updateInputValue(e,"author_email");this.updateAuthor(e)}} pattern="^[a-z0-9@-_\.]+$" />
             </mat-form-field>
             <mat-form-field>
               <mat-label>Preview Image URL:</mat-label>
