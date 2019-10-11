@@ -86,7 +86,7 @@ class AddItem extends Component {
         console.log( err, err.stack );
       }
       else {
-        M.toast({html: 'Item added!'})
+        M.toast({html: 'Item submitted!'})
         this.props.history.push('/');
       }
     });
