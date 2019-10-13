@@ -47,7 +47,7 @@ class Home extends Component {
 
   componentDidMount() {
     const params = {
-      TableName: 'mini-db',
+      TableName: 'mini-db-test',
     }
     this.docClient.scan( params, (err, data) => {
       if( data !== null ) {

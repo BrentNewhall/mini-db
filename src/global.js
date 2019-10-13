@@ -15,10 +15,20 @@ function getSimpleName( name ) {
   return name;
 }
 
+function getAuthorHTML( item ) {
+  if( typeof item.author_name !== "undefined" ) {
+    return <span>by <a href={item.author_email}>{item.author_name}</a></span>
+  }
+  else {
+    return <span></span>;
+  }
+}
+
 export function getItemHTML( item, index ) {
     if( typeof item.approved !== "undefined"  &&  ! item.approved )
       return null;
     const itemName = getSimpleName( item.name );
+    const authorHTML = getAuthorHTML( item );
     return (
       <div className="card" key={index}>
         <div className="card-image">
@@ -26,8 +36,8 @@ export function getItemHTML( item, index ) {
           <span className="card-title"><a href={item.link}>{itemName}</a></span>
         </div>
         <div className="card-content">
-          by <a href={item.author_email}>{item.author_name}</a><br />
-          [{item.tags !== "undefined" ? item.tags.values.map( (tag) => <span key={tag}><Link to={"/tag/" + tag}>{tag}</Link></span> ).reduce((prev,curr) => [prev, ', ', curr]) : null}]
+          {authorHTML}<br />
+          [{typeof item.tags !== "undefined" ? item.tags.values.map( (tag) => <span key={tag}><Link to={"/tag/" + tag}>{tag}</Link></span> ).reduce((prev,curr) => [prev, ', ', curr]) : null}]
         </div>
       </div>
     )
