@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as AWS from 'aws-sdk';
 import './App.css';
 
-import { getAllTags } from './global';
+import { getAllTags, dbConfig, tableName } from './global';
 import Header from './Header';
 
 class Tags extends Component {
@@ -11,19 +11,14 @@ class Tags extends Component {
     this.state = {
       items: [],
     }
-    AWS.config.update({
-      region: 'us-east-1',
-      endpoint: 'dynamodb.us-east-1.amazonaws.com',
-      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-    });
+    AWS.config.update( dbConfig );
     this.dynamodb = new AWS.DynamoDB();
     this.docClient = new AWS.DynamoDB.DocumentClient();
   }
 
   componentDidMount() {
     const params = {
-      TableName: 'mini-db',
+      TableName: tableName,
     }
     this.docClient.scan( params, (err, data) => {
       this.setState( {

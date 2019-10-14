@@ -2,6 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import emptyPreviewIcon from './empty-preview.png';
 
+export const dbConfig = {
+  region: 'us-east-1',
+  endpoint: 'dynamodb.us-east-1.amazonaws.com',
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+}
+export const tableName = "mini-db-test";
+
 function getSimpleName( name ) {
   const MAX_LENGTH = 50;
   if( name.length > MAX_LENGTH ) {
@@ -29,6 +37,10 @@ export function getItemHTML( item, index ) {
       return null;
     const itemName = getSimpleName( item.name );
     const authorHTML = getAuthorHTML( item );
+    let tagsHTML = null;
+    if( typeof item.tags !== "undefined" ) {
+      tagsHTML = <span>[{item.tags.values.map( (tag) => <span key={tag}><Link to={"/tag/" + tag}>{tag}</Link></span> ).reduce((prev,curr) => [prev, ', ', curr])}]</span>
+    }
     return (
       <div className="card" key={index}>
         <div className="card-image">
@@ -37,7 +49,7 @@ export function getItemHTML( item, index ) {
         </div>
         <div className="card-content">
           {authorHTML}<br />
-          [{typeof item.tags !== "undefined" ? item.tags.values.map( (tag) => <span key={tag}><Link to={"/tag/" + tag}>{tag}</Link></span> ).reduce((prev,curr) => [prev, ', ', curr]) : null}]
+          {tagsHTML}
         </div>
       </div>
     )
@@ -45,7 +57,6 @@ export function getItemHTML( item, index ) {
 
 function getColumn( items, index, offset ) {
     if( index+offset < items.length  &&  items[index+offset] !== null ) {
-      console.log( "Column:",items[index+offset]);
       return <div className="col m3">{items[index+offset]}</div>;
     }
     else {
@@ -68,7 +79,7 @@ function performItemSearch( itemsList, filter ) {
   return itemsList.map((item, index) => {
     if( (typeof item.name !== "undefined"  &&  item.name.toLowerCase().includes(filter.query.toLowerCase()))  ||
         (typeof item.author_name !== "undefined"  &&  item.author_name.toLowerCase().includes(filter.query.toLowerCase()))  ||
-        item.tags.values.includes(filter.query.toLowerCase())) {
+        (typeof item.tags !== "undefined"  && item.tags.values.includes(filter.query.toLowerCase()))) {
       return getItemHTML(item, index);
     }
     else {
@@ -112,7 +123,9 @@ export function getAllTags( itemsList ) {
   let tagCounts = {};
   if( typeof itemsList !== "undefined"  &&  itemsList.length > 0 ) {
     itemsList.forEach( (item) => {
-      tags = tags.concat(item.tags.values);
+      if( typeof item.tags !== "undefined" ) {
+        tags = tags.concat(item.tags.values);
+      }
     })
     tagCounts = getTagCounts( tags );
     tags = tags.filter((v, i, a) => a.indexOf(v) === i); 

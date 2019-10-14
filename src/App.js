@@ -3,7 +3,7 @@ import * as AWS from 'aws-sdk';
 import { Route, Link } from 'react-router-dom';
 import './App.css';
 
-import { getItemsGridded } from './global';
+import { getItemsGridded, dbConfig, tableName } from './global';
 import Tag from './Tag';
 import Tags from './Tags';
 import AddItem from './AddItem';
@@ -35,19 +35,14 @@ class Home extends Component {
       items: [],
       search: "",
     }
-    AWS.config.update({
-      region: 'us-east-1',
-      endpoint: 'dynamodb.us-east-1.amazonaws.com',
-      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-    });
+    AWS.config.update( dbConfig );
     this.dynamodb = new AWS.DynamoDB();
     this.docClient = new AWS.DynamoDB.DocumentClient();
   }
 
   componentDidMount() {
     const params = {
-      TableName: 'mini-db',
+      TableName: tableName,
     }
     this.docClient.scan( params, (err, data) => {
       if( data !== null ) {

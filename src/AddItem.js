@@ -5,6 +5,7 @@ import M from 'materialize-css';
 
 import uuidv4 from 'uuid/v4';
 
+import { dbConfig, tableName } from './global';
 import Header from './Header';
 import emptyPreviewIcon from './empty-preview.png';
 
@@ -17,12 +18,7 @@ class AddItem extends Component {
       dupeWarningVisible: "none",
       addDisabled: false,
     }
-    AWS.config.update({
-      region: 'us-east-1',
-      endpoint: 'dynamodb.us-east-1.amazonaws.com',
-      accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
-    });
+    AWS.config.update( dbConfig );
     this.tag = props.match.params["tag"];
     this.dynamodb = new AWS.DynamoDB();
     this.docClient = new AWS.DynamoDB.DocumentClient();
@@ -36,7 +32,7 @@ class AddItem extends Component {
 
   componentDidMount() {
     const params = {
-      TableName: 'mini-db',
+      TableName: tableName,
     }
     this.docClient.scan( params, (err, data) => {
       if( data !== null ) {
@@ -59,7 +55,7 @@ class AddItem extends Component {
   addItem(e) {
     const tagList = this.inputs["tags"].toLowerCase().replace(/[^a-z,]/g, "").split(",");
     let params = {
-      TableName: 'mini-db',
+      TableName: tableName,
       ReturnConsumedCapacity: "TOTAL",
       Item: {
         'id': { S: uuidv4() },
