@@ -66,11 +66,11 @@ function getColumn( items, index, offset ) {
 
 function performItemTagMatch( itemsList, filter ) {
   return itemsList.map((item, index) => {
-    if (item.tags.values.includes(filter.tag)) {
-      return getItemHTML(item, index);
+    if( typeof item.tags === "undefined"  ||  ! item.tags.values.includes(filter.tag) ) {
+      return null;
     }
     else {
-      return null;
+      return getItemHTML(item, index);
     }
   })
 }

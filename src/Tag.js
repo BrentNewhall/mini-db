@@ -31,7 +31,7 @@ class Tag extends Component {
     const itemsGridded = getItemsGridded( this.state.items, {type:"tag",tag:this.props.match.params["tag"]} );
     return (
       <div className="App">
-        <Header title={this.tag} items={this.state.items} />
+        <Header title={this.props.match.params["tag"]} items={this.state.items} />
         <div className="container">
           {itemsGridded}
         </div>
