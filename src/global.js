@@ -24,8 +24,9 @@ function getSimpleName( name ) {
 }
 
 function getAuthorHTML( item ) {
+  let authorLink = typeof item.author_contact !== "undefined" ? item.author_contact : item.author_email;
   if( typeof item.author_name !== "undefined" ) {
-    return <span>by <a href={item.author_email}>{item.author_name}</a></span>
+    return <span>by <a href={authorLink}>{item.author_name}</a></span>
   }
   else {
     return <span></span>;
