@@ -147,6 +147,7 @@ class AddItem extends Component {
               <input name="license" placeholder="CC BY 3.0" onChange={(e) => this.updateInputValue(e,"license")} pattern="^[A-Za-z0-9- .]+$" />
             </mat-form-field>
             <p>Note: Your item will not appear in the database immediately; it will be reviewed and approved to avoid spam.</p>
+            <p>Please don't submit files with visible private parts or breasts, or that contain Disney characters.</p>
             <input className="btn btn-primary" type="submit" disabled={this.state.addDisabled} onClick={(e) => this.addItem(e)} value="Add" />
           </form>
         </div>
